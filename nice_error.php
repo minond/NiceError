@@ -1,10 +1,6 @@
 <?php
 
-namespace Fabrico\Extension\ViewBacktrace;
-
-use Fabrico\Event\Reporter;
-use Fabrico\View\View;
-use Fabrico\Core\Ext;
+namespace util\error;
 
 /**
  * source contents getter
@@ -24,137 +20,154 @@ function getsource($file, $line, $offset = 10, $show = true)
         $i = $line - $offset;
         $max = $line + $offset + 1;
 
-        for (; $i < $max; $i++) {
-            if (isset($lines[ $i - 1 ])) {
+        for (; $i < $max; $i++)
+            if (isset($lines[ $i - 1 ]))
                 $source[] = [
                     'text' => $lines[ $i - 1 ],
                     'num' => $i,
                 ];
-            }
-        }
     }
 
     return $source;
 }
 
-if (Ext::enabled('view_backtrace') && Ext::enabled('twig')) {
-    Reporter::before('fabrico.request.http.request:preparehandler', function($info) {
-        $view     = Ext::config('view_backtrace:view');
-        $errors   = Ext::config('view_backtrace:error:reporting');
-        $err_msg  = Ext::config('view_backtrace:error:label');
-        $err_kill = Ext::config('view_backtrace:error:kill');
-        $exc_kill = Ext::config('view_backtrace:exception:kill');
-        $at_throw = Ext::config('view_backtrace:exception:from_throw');
-        $bak_show = Ext::config('view_backtrace:backtrace:display');
-        $src_show = Ext::config('view_backtrace:source:display');
-        $src_line = Ext::config('view_backtrace:source:line_offset');
-        $shutdown = Ext::config('view_backtrace:shutdown:reports');
+/**
+ * render the error page
+ * @param array $args
+ */
+function renderview(array $args)
+{
+    $config = config();
+    $display_backtrace = $config['backtrace']['display'];
+    $display_source = $config['source']['display'];
+    $line_offset = $config['source']['line_offset'];
 
-        error_reporting($errors);
-        ini_set('display_errors', 'off');
+    $file = $args['file'];
+    $line = $args['line'];
+    $errtype = $args['errtype'];
+    $message = $args['message'];
+    $backtrace = $args['backtrace'];
+    $fullhtml = $args['fullhtml'];
 
-        set_error_handler(function($errnum, $message, $file, $line) use (
-            $view,
-            $err_msg,
-            $err_kill,
-            $bak_show,
-            $src_show,
-            $src_line
-        ) {
-            $errtype = array_key_exists($errnum, $err_msg) ?
-                $err_msg[ $errnum ] : $errnum;
+    $source = getsource(
+        $file,
+        $line,
+        $line_offset,
+        $display_source
+    );
 
-            echo View::generate($view, [
-                'errtype' => $errtype,
-                'message' => $message,
-                'file' => $file,
-                'line' => $line,
-                'backtrace' => debug_backtrace(),
-                'display_backtrace' => $bak_show,
-                'display_source' => $src_show,
-                'source' => getsource($file, $line, $src_line, $src_show),
-                'fullhtml' => $err_kill,
-            ]);
+    extract($args);
+    include 'nice_error.phtml';
 
-            if ($err_kill) {
-                die;
-            }
-        }, $errors);
-
-        register_shutdown_function(function() use (
-            $view,
-            $err_msg,
-            $src_show,
-            $src_line,
-            $shutdown
-        ) {
-            $error = error_get_last();
-
-            if (!is_null($error)) {
-                extract($error);
-                $errtype = array_key_exists($type, $err_msg) ?
-                    $err_msg[ $type ] : $type;
-
-                if (!in_array($type, $shutdown)) {
-                    return;
-                }
-
-                echo View::generate($view, [
-                    'errtype' => $errtype,
-                    'message' => $message,
-                    'file' => $file,
-                    'line' => $line,
-                    'display_backtrace' => false,
-                    'display_source' => $src_show,
-                    'source' => getsource($file, $line, $src_line, $src_show),
-                    'fullhtml' => true,
-                ]);
-            }
-        });
-
-        set_exception_handler(function($exception) use (
-            $view,
-            $exc_kill,
-            $bak_show,
-            $src_show,
-            $src_line,
-            $at_throw
-        ) {
-            $backtrace = $exception->getTrace();
-
-            if ($exception instanceof \Twig_Error) {
-                $line = $exception->getTemplateLine();
-                $file = $exception->getTemplateFile();
-                $file = View::generateFileFilderFilePath($file);
-            } else if ($at_throw) {
-                $file = $exception->getFile();
-                $line = $exception->getLine();
-            } else {
-                $file = $backtrace[0]['file'];
-                $line = $backtrace[0]['line'];
-            }
-
-            // prepend exception thrown location
-            array_unshift($backtrace, [
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-            ]);
-
-            echo View::generate($view, [
-                'errtype' => get_class($exception),
-                'message' => $exception->getMessage(),
-                'file' => $file,
-                'line' => $line,
-                'backtrace' => $backtrace,
-                'display_backtrace' => $bak_show,
-                'display_source' => $src_show,
-                'source' => getsource($file, $line, $src_line, $src_show),
-                'fullhtml' => $exc_kill,
-            ]);
-
-            if ($exc_kill) {
-                die;
-            }
-        });
-    });
+    if ($fullhtml)
+        die;
 }
+
+/**
+ * error handler
+ * @param int $errnum
+ * @param string $message
+ * @param string $file
+ * @param string $line
+ */
+function handleerror($errnum, $message, $file, $line)
+{
+    $config = config();
+    $errkill = $config['error']['kill'];
+    $errmsgs = $config['error']['label'];
+    $errtype = array_key_exists($errnum, $errmsgs) ?
+        $errmsgs[ $errnum ] : $errnum;
+
+    renderview([
+        'errtype' => $errtype,
+        'message' => $message,
+        'file' => $file,
+        'line' => $line,
+        'backtrace' => debug_backtrace(),
+        'fullhtml' => $errkill,
+    ]);
+}
+
+/**
+ * uncaught exception handler
+ * @param Exception $exception
+ */
+function handleexception($exception)
+{
+    $config = config();
+    $backtrace = $exception->getTrace();
+    $from_throw = $config['exception']['from_throw'];
+    $exc_kill = $config['exception']['kill'];
+
+    if (!$from_throw && count($backtrace)) {
+        $file = $backtrace[0]['file'];
+        $line = $backtrace[0]['line'];
+    } else {
+        $file = $exception->getFile();
+        $line = $exception->getLine();
+    }
+
+    // prepend exception thrown location
+    array_unshift($backtrace, [
+        'file' => $exception->getFile(),
+        'line' => $exception->getLine(),
+    ]);
+
+    renderview([
+        'errtype' => get_class($exception),
+        'message' => $exception->getMessage(),
+        'file' => $file,
+        'line' => $line,
+        'backtrace' => $backtrace,
+        'fullhtml' => $exc_kill,
+    ]);
+}
+
+/**
+ * shutdown handler
+ */
+function handleshutdown()
+{
+    $config = config();
+    $error = error_get_last();
+    $errmsgs = $config['error']['label'];
+    $shutdown = $config['error']['shutdown'];
+
+    if (!is_null($error)) {
+        extract($error);
+        $errtype = array_key_exists($type, $errmsgs) ?
+            $errmsgs[ $type ] : $type;
+
+        if (!in_array($type, $shutdown)) {
+            return;
+        }
+
+        renderview([
+            'errtype' => $errtype,
+            'message' => $message,
+            'file' => $file,
+            'line' => $line,
+            'fullhtml' => true,
+        ]);
+    }
+}
+
+/**
+ * @return array
+ */
+function config()
+{
+    static $config;
+
+    if (!$config)
+        $config = parse_ini_file('nice_error.ini', true);
+
+    return $config;
+}
+
+error_reporting(config()['error']['report']);
+ini_set('display_errors', 'off');
+set_error_handler(__NAMESPACE__ . '\handleerror');
+set_exception_handler(__NAMESPACE__ . '\handleexception');
+register_shutdown_function(__NAMESPACE__ . '\handleshutdown');
+

@@ -140,15 +140,15 @@
     <?php if ($display_source): ?>
     <div class="source">
         <table>
-        <? foreach ($source as $s_line): ?>
-            <? if ($s_line->num == $line) :?>
+        <?php foreach ($source as $s_line): ?>
+            <?php if ($s_line['num'] == $line) :?>
             <tr class="error-line">
             <?php else: ?>
             <tr>
             <?php endif ?>
-                <td class="source-num"><?php echo $s_line->num; ?></td>
+                <td class="source-num"><?php echo $s_line['num']; ?></td>
                 <td class="source-text">
-                    <pre><?php echo $s_line->text; ?></pre>
+                    <pre><?php echo htmlspecialchars($s_line['text']); ?></pre>
                 </td>
             </tr>
         <?php endforeach ?>
@@ -161,18 +161,18 @@
     <div class="backtrace">
         <ol>
         <?php foreach ($backtrace as $trace): ?>
-            <?php if ($trace->file): ?>
+            <?php if (isset($trace['file']) && $trace['file']): ?>
             <li>
-                <span><?php echo $trace->file; ?>:<?php echo $trace->line; ?></span>
-                <?php if ($trace->function): ?>
+                <span><?php echo $trace['file']; ?>:<?php echo $trace['line']; ?></span>
+                <?php if (isset($trace['function']) && $trace['function']): ?>
                 <span>- <span>
                 <b>
-                    <?php if ($trace->class): ?>
-                        <span><?php echo $trace->class; ?></span>
-                        <span><?php echo $trace->type; ?></span>
-                        <span><?php echo $trace->function; ?></span>
+                    <?php if (isset($trace['class']) && $trace['class']): ?>
+                        <span><?php echo $trace['class']; ?></span>
+                        <span><?php echo $trace['type']; ?></span>
+                        <span><?php echo $trace['function']; ?></span>
                     <?php else: ?>
-                        <span><?php $trace->function; ?></span>
+                        <span><?php $trace['function']; ?></span>
                     <?php endif ?>
                 </b>
                 <?php endif ?>
