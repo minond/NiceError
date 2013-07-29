@@ -1,0 +1,13 @@
+{
+    "name": "minond/nice_error",
+    "description": "Nicer error output",
+    "authors": [
+        {
+            "name": "Marcos Minond",
+            "email": "minond.marcos@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
