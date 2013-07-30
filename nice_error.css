@@ -1,0 +1,142 @@
+/* page styles */
+body {
+    overflow-y: scroll;
+}
+
+.nice_error {
+    border: 1px solid rgb(248, 234, 178);
+    background-color: #FDF6E3;
+    margin: 18px 10px 18px 10px;
+    padding: 10px;
+    font: 13px Arial;
+    cursor: default;
+}
+
+.nice_error .header {
+    border-bottom: 1px solid rgb(248, 234, 178);
+    margin: -10px -10px 10px -10px;
+    padding: 10px;
+    font-size: 16px;
+    color: #DC322F;
+    font-weight: bold;
+}
+
+.nice_error .description tr td:nth-of-type(1) {
+    font: bold 15px Arial;
+    text-align: right;
+    padding: 2px 4px 2px 0px;
+    vertical-align: top;
+	color: #002B36;
+}
+
+.nice_error .description tr td:nth-of-type(2) {
+    padding: 2px 0px 2px 4px;
+    vertical-align: top;
+    text-align: left;
+	color: #657B83;
+	font: normal 15px Arial;
+}
+
+.nice_error .description tr td ol {
+    margin-left: -18px;
+}
+
+.nice_error .source {
+    font: 12px monospace;
+    margin-right: -10px;
+    margin-left: -10px;
+    margin-top: 10px;
+    border-top: 1px solid rgb(248, 234, 178);
+    border-bottom: 1px solid rgb(248, 234, 178);
+    padding: 4px 0px 4px 10px;
+    white-space: pre-line;
+    overflow: auto;
+}
+
+.nice_error .source table {
+    border-collapse: collapse;
+}
+
+.nice_error .source table td.source-num {
+    width: 40px;
+    padding-right: 10px;
+    text-align: right;
+    color: gray;
+    vertical-align: top;
+}
+
+.nice_error .source table td.source-text pre {
+    word-break: break-word;
+    width: auto;
+    min-width: 620px;
+    margin-bottom: 0px;
+    white-space: pre-wrap;
+}
+
+.nice_error .source table tr.error-line td.source-num {
+    color: rgb(235, 7, 7);
+    font-weight: bold;
+}
+
+/* syntax */
+.hi-sl_comment,
+.hi-ml_comment_start,
+.hi-ml_comment_end,
+.hi-ml_comment_body {
+    color: gray;
+}
+
+.hi-annotations {
+    font-weight: bold;
+}
+
+.hi-keywords {
+    color: rgb(7, 7, 111);
+    font-weight: bold;
+}
+
+.hi-variables,
+.hi-properties {
+    color: rgb(14, 117, 143);
+}
+
+.hi-class_names {
+    font-weight: bold;
+}
+
+.hi-func_names {
+    font-weight: bold;
+    color: rgb(153, 9, 9);
+}
+
+.hi-func_calls .hi-keywords,
+.hi-func_calls .hi-constant,
+.hi-func_calls {
+    color: rgb(14, 117, 143);
+    font-weight: normal;
+}
+
+.hi-characters {
+    font-weight: bold;
+}
+
+.hi-specials {
+    font-style: italic;
+    color: rgb(90, 35, 35);
+}
+
+.hi-constant {
+    color: rgb(241, 12, 12);
+    font-weight: bold;
+}
+
+.hi-strings,
+.hi-strings .hi {
+    color: rgb(240, 113, 99);
+    font-weight: normal;
+}
+
+.hi-numbers {
+    color: rgb(192, 30, 30);
+    font-weight: bold;
+}

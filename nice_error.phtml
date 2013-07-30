@@ -1,141 +1,61 @@
-<?php if ($fullhtml): ?>
+<?php
+function o($text)
+{
+    echo htmlspecialchars($text);
+}
+?><?php if ($fullhtml): ?>
 <html>
+    <head>
+        <title><?php o($errtype); ?>: <?php o($message); ?></title>
+    </head>
 <body>
 <?php endif ?>
 <style type="text/css">
-/* page styles */
-.fabrico-error {
-    border: 1px solid rgb(248, 234, 178);
-    background-color: rgb(255, 254, 249);
-    margin: 18px 10px 0px 10px;
-    padding: 10px;
-    font: 13px Arial;
-    cursor: default;
-    min-width: 750px;
-}
-
-.fabrico-error .header {
-    border-bottom: 1px solid rgb(248, 234, 178);
-    margin: -10px -10px 10px -10px;
-    padding: 10px;
-    font-size: 16px;
-    color: rgb(250, 60, 60);
-    font-weight: bold;
-}
-
-.fabrico-error .section-header {
-    margin-top: 10px;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgb(255, 249, 216);
-    font-weight: bold;
-}
-
-.fabrico-error .source {
-    font: 12px monospace;
-    background-color: white;
-    margin-right: -10px;
-    margin-left: -10px;
-    margin-top: 10px;
-    border-top: 1px solid rgb(248, 234, 178);
-    border-bottom: 1px solid rgb(248, 234, 178);
-    padding: 4px 0px 4px 10px;
-    white-space: pre-line;
-}
-
-.fabrico-error .source table {
-    border-collapse: collapse;
-}
-
-.fabrico-error .source table td.source-num {
-    width: 40px;
-    padding-right: 10px;
-    text-align: right;
-    color: gray;
-    vertical-align: top;
-    /*font-weight: bold;*/
-}
-
-.fabrico-error .source table td.source-text pre {
-    word-break: break-word;
-    width: 620px;
-    margin-bottom: 0px;
-}
-
-.fabrico-error .source table tr.error-line td.source-num {
-    color: rgb(235, 7, 7);
-    font-weight: bold;
-}
-
-/* syntax */
-.hi-sl_comment,
-.hi-ml_comment_start,
-.hi-ml_comment_end,
-.hi-ml_comment_body {
-    color: gray;
-}
-
-.hi-annotations {
-    font-weight: bold;
-}
-
-.hi-keywords {
-    color: rgb(7, 7, 111);
-    font-weight: bold;
-}
-
-.hi-variables,
-.hi-properties {
-    color: rgb(14, 117, 143);
-}
-
-.hi-class_names {
-    font-weight: bold;
-}
-
-.hi-func_names {
-    font-weight: bold;
-    color: rgb(153, 9, 9);
-}
-
-.hi-func_calls .hi-keywords,
-.hi-func_calls .hi-constant,
-.hi-func_calls {
-    color: rgb(14, 117, 143);
-    font-weight: normal;
-}
-
-.hi-characters {
-    font-weight: bold;
-}
-
-.hi-specials {
-    font-style: italic;
-    color: rgb(90, 35, 35);
-}
-
-.hi-constant {
-    color: rgb(241, 12, 12);
-    font-weight: bold;
-}
-
-.hi-strings,
-.hi-strings .hi {
-    color: rgb(240, 113, 99);
-    font-weight: normal;
-}
-
-.hi-numbers {
-    color: rgb(192, 30, 30);
-    font-weight: bold;
-}
+<?php include 'nice_error.css'; ?>
 </style>
-<div class="fabrico-error">
-    <div class="header">Application error - <?php echo $errtype; ?></div>
-
-    <div class="section-header">Description</div>
-    <div class="desc">
-        <div><?php echo $message; ?></div>
+<div class="nice_error">
+    <div class="header">Application error - <?php o($errtype); ?></div>
+    <div class="description">
+        <table>
+            <tr>
+                <td>File:</td>
+                <td><?php o($file); ?></td>
+            </tr>
+            <tr>
+                <td>Line:</td>
+                <td><?php o($line); ?></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><?php o($message); ?></td>
+            </tr>
+            <?php if ($display_backtrace): ?>
+            <tr>
+                <td>Backtrace:</td>
+                <td>
+                    <ol>
+                    <?php foreach ($backtrace as $trace): ?>
+                        <?php if (isset($trace['file']) && $trace['file']): ?>
+                        <li>
+                            <span><?php o($trace['file']); ?>:<?php o($trace['line']); ?></span>
+                            <?php if (isset($trace['function']) && $trace['function']): ?>
+                            <span>- <span>
+                            <b>
+                                <?php if (isset($trace['class']) && $trace['class']): ?>
+                                    <span><?php o($trace['class']); ?></span><span><?php o($trace['type']); ?></span><span><?php o($trace['function']); ?></span>
+                                <?php else: ?>
+                                    <span><?php $trace['function']; ?></span>
+                                <?php endif ?>
+                            </b>
+                            <?php endif ?>
+                        </li>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                    </ol>
+                </td>
+            </tr>
+            <?php endif ?>
+        </table>
     </div>
     <?php if ($display_source): ?>
     <div class="source">
@@ -146,40 +66,13 @@
             <?php else: ?>
             <tr>
             <?php endif ?>
-                <td class="source-num"><?php echo $s_line['num']; ?></td>
+                <td class="source-num"><?php o($s_line['num']); ?></td>
                 <td class="source-text">
-                    <pre><?php echo htmlspecialchars($s_line['text']); ?></pre>
+                    <pre><?php o($s_line['text']); ?></pre>
                 </td>
             </tr>
         <?php endforeach ?>
         </table>
-    </div>
-    <?php endif ?>
-
-    <?php if ($display_backtrace): ?>
-    <div class="section-header">Backtrace</div>
-    <div class="backtrace">
-        <ol>
-        <?php foreach ($backtrace as $trace): ?>
-            <?php if (isset($trace['file']) && $trace['file']): ?>
-            <li>
-                <span><?php echo $trace['file']; ?>:<?php echo $trace['line']; ?></span>
-                <?php if (isset($trace['function']) && $trace['function']): ?>
-                <span>- <span>
-                <b>
-                    <?php if (isset($trace['class']) && $trace['class']): ?>
-                        <span><?php echo $trace['class']; ?></span>
-                        <span><?php echo $trace['type']; ?></span>
-                        <span><?php echo $trace['function']; ?></span>
-                    <?php else: ?>
-                        <span><?php $trace['function']; ?></span>
-                    <?php endif ?>
-                </b>
-                <?php endif ?>
-            </li>
-            <?php endif ?>
-        <?php endforeach ?>
-        </ol>
     </div>
     <?php endif ?>
 </div>
@@ -187,81 +80,7 @@
 <style type="text/css">
 </style>
 <script type="text/javascript">
-(function() {
-    var highlight, matchers, len, i,
-        nodes = document.querySelectorAll("table td pre");
-
-    matchers = {
-        ml_comment_start: { r: /^\s{0,}(\/\*\*)/ },
-        ml_comment_body: { r: /^\s{0,}(\*.+)/, o: ["annotations"] },
-        ml_comment_end: { r: /^\s{0,}(\*\/)/ },
-        sl_comment: { r: /^\s{0,}(\/\/.+)/, o: ["annotations"] },
-        func_calls: { r: /([a-zA-Z_]+?)\(/ },
-        func_names: { r: /function\s+([a-zA-Z_]+)/ },
-        strings: { r: /('.+?'|".+?")/ },
-        keywords: { r: /(public|protected|static|function|use |namespace |new |if|do|while|foreach|for| as |break|return|class | extends | implements |throw |echo|abstract |final |interface |self|null|try|catch|case|default|switch|endif|endwhile|endfor|endforeach|else|elseif|trait |require|require_once|include|include_once|list)/ },
-        constant: { r: /(true|false|array|object|bool|boolean|int|integer|string|double|float|__METHOD__|__DIR__|__NAMESPACE__|__FUNCTION__|__CLASS__|__FILE__|__LINE__)/ },
-        annotations: { r: /^\s{0,}\*\s+(\@\w+)/ },
-        characters: { r: /(\{|\}|\(|\)|\[|\])/ },
-        variables: { r: /(\$[a-zA-Z\$_]+)/ },
-        properties: { r: /\-\>([a-zA-Z_]+)/ },
-        class_names: { r: /class\s+|new\s+([a-zA-Z_]+)[::]{0}/ },
-        specials: { r: /(\@|\&)/ },
-        numbers: { r: /([0-9]+)/ }
-    };
-
-    highlight = function(node) {
-        var matcher, match, child, here, getwrapper, getregex, html,
-            cleanup = document.createElement("div"), str=node.innerHTML;
-
-        getwrapper = function(klass, html) {
-            return "<span class='hi hi-" + klass + "'>" + html + "</span>";
-        };
-
-        getregex = function(html) {
-            return new RegExp(html.replace(/(\W)/g, "\\$1"), "g");
-        };
-
-        for (var matcher in matchers) {
-            if (child && child.indexOf(matcher) === -1) {
-                continue;
-            }
-
-            if (node.innerText) {
-                str = node.innerText;
-            }
-
-            (function replace(str) {
-                if (match = str.match(matchers[ matcher ].r)) {
-                    if (!match[1]) {
-                        return;
-                    }
-
-                    if (matchers[ matcher ].o) {
-                        child = matchers[ matcher ].o;
-                    }
-
-                    html = match[1];
-                    here = match.index + html.length;
-                    cleanup.innerHTML = html;
-                    html = cleanup.innerHTML;
-
-                    node.innerHTML = node.innerHTML.replace(
-                        html, getwrapper(matcher, html));
-                    node.innerHTML = node.innerHTML.replace(
-                        getregex(html), getwrapper(matcher, html));
-
-                    // more matches?
-                    replace(str.substr(here));
-                }
-            })(str);
-        }
-    };
-
-    for (i = 0, len = nodes.length; i < len; i++) {
-        highlight(nodes[i]);
-    }
-})();
+<?php include 'nice_error.js'; ?>
 </script>
 <?php if ($fullhtml): ?>
 </body>
