@@ -46,8 +46,14 @@ function renderview(array $args)
     $line = $args['line'];
     $errtype = $args['errtype'];
     $message = $args['message'];
-    $backtrace = $args['backtrace'];
     $fullhtml = $args['fullhtml'];
+
+    if (!isset($args['backtrace'])) {
+        $backtrace = [];
+        $display_backtrace = false;
+    } else {
+        $backtrace = $args['backtrace'];
+    }
 
     $source = getsource(
         $file,
