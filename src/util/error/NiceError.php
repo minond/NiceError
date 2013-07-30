@@ -25,26 +25,21 @@ class NiceError
      * @param string file
      * @param int $line
      * @param int $offset - optional, default = 10
-     * @param int $show - optional, default = true
      * @return string
      */
-    protected function getsource($file, $line, $offset = 10, $show = true)
+    protected function getsource($file, $line, $offset = 10)
     {
         $source = [];
-        $lines = null;
+        $lines = explode(PHP_EOL, file_get_contents($file));
+        $i = $line - $offset;
+        $max = $line + $offset + 1;
 
-        if ($show) {
-            $lines = explode(PHP_EOL, file_get_contents($file));
-            $i = $line - $offset;
-            $max = $line + $offset + 1;
-
-            for (; $i < $max; $i++)
-                if (isset($lines[ $i - 1 ]))
-                    $source[] = [
-                        'text' => $lines[ $i - 1 ],
-                        'num' => $i,
-                    ];
-        }
+        for (; $i < $max; $i++)
+            if (isset($lines[ $i - 1 ]))
+                $source[] = [
+                    'text' => $lines[ $i - 1 ],
+                    'num' => $i,
+                ];
 
         return $source;
     }
@@ -72,11 +67,10 @@ class NiceError
             $backtrace = $args['backtrace'];
         }
 
-        $source = $this->getsource(
+        $source = !$display_source ? [] : $this->getsource(
             $file,
             $line,
-            $line_offset,
-            $display_source
+            $line_offset
         );
 
         extract($args);
