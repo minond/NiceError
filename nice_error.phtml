@@ -44,7 +44,7 @@ function o($text)
                                 <?php if (isset($trace['class']) && $trace['class']): ?>
                                     <span><?php o($trace['class']); ?></span><span><?php o($trace['type']); ?></span><span><?php o($trace['function']); ?></span>
                                 <?php else: ?>
-                                    <span><?php $trace['function']; ?></span>
+                                    <span><?php o($trace['function']); ?></span>
                                 <?php endif ?>
                             </b>
                             <?php endif ?>

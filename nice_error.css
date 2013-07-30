@@ -45,7 +45,7 @@ body {
 .nice_error .source {
 	font: 12px monospace;
 	margin-right: -10px;
-	margin-left: -10px;
+	margin-left: -20px;
 	margin-top: 10px;
 	border-top: 1px solid rgb(248, 234, 178);
 	padding: 4px 0px 4px 10px;
@@ -71,6 +71,10 @@ body {
 	min-width: 620px;
 	margin-bottom: 0px;
 	white-space: pre-wrap;
+}
+
+.nice_error .source table tr.error-line td {
+    background-color: rgba(255, 224, 224, 0.6);
 }
 
 .nice_error .source table tr.error-line td.source-num {
@@ -117,7 +121,7 @@ body {
 }
 
 .hi-characters {
-	font-weight: bold;
+	/* font-weight: bold; */
 }
 
 .hi-specials {
