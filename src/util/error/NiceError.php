@@ -74,7 +74,7 @@ class NiceError
         );
 
         extract($args);
-        include $this->config['base_dir'] . '/resources/nice_error.phtml';
+        include $this->config['core']['base_dir'] . '/resources/nice_error.phtml';
 
         if ($fullhtml)
             die;
