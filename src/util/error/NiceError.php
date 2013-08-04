@@ -139,10 +139,10 @@ class NiceError
             $file = $exception->getFile();
             $line = $exception->getLine();
             $backtrace = debug_backtrace();
+            array_shift($backtrace);
         }
 
         // prepend exception thrown location
-        // array_shift($backtrace);
         array_unshift($backtrace, [
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
