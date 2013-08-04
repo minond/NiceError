@@ -19,8 +19,8 @@ if ($domainconfig = getenv('NICE_ERROR_CONFIG')) {
 if ($config['core']['enabled']) {
     $niceerror = new NiceError($config);
 
-    error_reporting($config['error']['report']);
-    ini_set('display_errors', !$config['core']['takeover']);
+    error_reporting(E_ALL);
+    ini_set('display_errors', true);
 
     set_error_handler([ $niceerror, 'handleerror' ]);
     set_exception_handler([ $niceerror, 'handleexception' ]);

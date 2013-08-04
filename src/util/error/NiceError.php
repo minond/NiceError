@@ -50,34 +50,48 @@ class NiceError
      */
     protected function renderview(array $args)
     {
-        $display_backtrace = $this->config['backtrace']['display'];
-        $display_source = $this->config['source']['display'];
-        $line_offset = $this->config['source']['line_offset'];
-
         $file = $args['file'];
         $line = $args['line'];
         $errtype = $args['errtype'];
         $message = $args['message'];
-        $fullhtml = $args['fullhtml'];
 
         if (!isset($args['backtrace'])) {
             $backtrace = [];
-            $display_backtrace = false;
         } else {
             $backtrace = $args['backtrace'];
         }
 
-        $source = !$display_source ? [] : $this->getsource(
-            $file,
-            $line,
-            $line_offset
-        );
+        $o = function($text) {
+            echo htmlspecialchars($text);
+        };
+
+        $h = function($text) {
+            return htmlspecialchars($text);
+        };
+
+        $s = function($obj, $key) {
+            return isset($obj[ $key ]) && $obj[ $key ];
+        };
+
+        $source = function($file, $line, $offset = 10) {
+            $source = [];
+            $lines = explode(PHP_EOL, file_get_contents($file));
+            $i = $line - $offset;
+            $max = $line + $offset + 1;
+
+            for (; $i < $max; $i++)
+                if (isset($lines[ $i - 1 ]))
+                    $source[] = [
+                        'text' => $lines[ $i - 1 ],
+                        'num' => $i,
+                    ];
+
+            return $source;
+        };
 
         extract($args);
         include $this->config['core']['base_dir'] . '/resources/nice_error.phtml';
-
-        if ($fullhtml)
-            die;
+        die;
     }
 
     /**
@@ -89,18 +103,20 @@ class NiceError
      */
     public function handleerror($errnum, $message, $file, $line)
     {
-        $errkill = $this->config['error']['kill'];
         $errmsgs = $this->config['error']['label'];
         $errtype = array_key_exists($errnum, $errmsgs) ?
             $errmsgs[ $errnum ] : $errnum;
+
+        // remove this function
+        $backtrace = debug_backtrace();
+        array_shift($backtrace);
 
         $this->renderview([
             'errtype' => $errtype,
             'message' => $message,
             'file' => $file,
             'line' => $line,
-            'backtrace' => debug_backtrace(),
-            'fullhtml' => $errkill,
+            'backtrace' => $backtrace,
         ]);
     }
 
@@ -111,21 +127,27 @@ class NiceError
     public function handleexception($exception)
     {
         $backtrace = $exception->getTrace();
-        $from_throw = $this->config['exception']['from_throw'];
-        $exc_kill = $this->config['exception']['kill'];
+        $class = '';
+        $function = '';
 
-        if (!$from_throw && count($backtrace)) {
+        if (count($backtrace)) {
             $file = $backtrace[0]['file'];
             $line = $backtrace[0]['line'];
+            $class = $backtrace[0]['class'];
+            $function = $backtrace[0]['function'];
         } else {
             $file = $exception->getFile();
             $line = $exception->getLine();
+            $backtrace = debug_backtrace();
         }
 
         // prepend exception thrown location
+        array_shift($backtrace);
         array_unshift($backtrace, [
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
+            'class' => $class,
+            'function' => $function,
         ]);
 
         $this->renderview([
@@ -134,7 +156,6 @@ class NiceError
             'file' => $file,
             'line' => $line,
             'backtrace' => $backtrace,
-            'fullhtml' => $exc_kill,
         ]);
     }
 
@@ -145,7 +166,23 @@ class NiceError
     {
         $error = error_get_last();
         $errmsgs = $this->config['error']['label'];
-        $shutdown = $this->config['error']['shutdown'];
+        $shutdown = [
+            E_ERROR,
+            E_WARNING,
+            E_PARSE,
+            E_NOTICE,
+            E_CORE_ERROR,
+            E_CORE_WARNING,
+            E_COMPILE_ERROR,
+            E_COMPILE_WARNING,
+            E_USER_ERROR,
+            E_USER_WARNING,
+            E_USER_NOTICE,
+            E_STRICT,
+            E_RECOVERABLE_ERROR,
+            E_DEPRECATED,
+            E_USER_DEPRECATED,
+        ];
 
         if (!is_null($error)) {
             extract($error);
@@ -161,7 +198,6 @@ class NiceError
                 'message' => $message,
                 'file' => $file,
                 'line' => $line,
-                'fullhtml' => true,
             ]);
         }
     }

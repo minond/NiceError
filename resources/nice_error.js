@@ -1,5 +1,5 @@
 (function() {
-    var highlight, matchers, len, i,
+    var highlight, matchers, len, i, files,
         nodes = document.querySelectorAll("table td pre");
 
     matchers = {
@@ -13,7 +13,8 @@
         strings: { r: /('.+?'|".+?")/ },
         keywords: { r: /(public|protected|static|function|use |namespace |new |if|do|while|foreach|for| as |break|return|class | extends | implements |throw |echo|die|exit|abstract |final |interface |self|null|try|catch|case|default|switch|endif|endwhile|endfor|endforeach|else|elseif|trait |require|require_once|include|include_once|list)/ },
         constant: { r: /(true|false|array|object|bool|boolean|int|integer|string|double|float|__METHOD__|__DIR__|__NAMESPACE__|__FUNCTION__|__CLASS__|__FILE__|__LINE__)/ },
-        annotations: { r: /^\s{0,}\*\s+(\@\w+)/ },
+        annotations: { r: /^\s{0,}\*\s+(\@\w+)/, o: ["annotation_at"] },
+        annotation_at: { r: /^\s{0,}\*\s+(\@)\w+/ },
         characters: { r: /(\{|\}|\(|\)|\[|\])/ },
         properties: { r: /\-\>([a-zA-Z_]+)/ },
         class_names: { r: /class\s+|new\s+([a-zA-Z_]+)[::]{0}/ },
@@ -71,5 +72,31 @@
 
     for (i = 0, len = nodes.length; i < len; i++) {
         highlight(nodes[i]);
+    }
+
+    // view source
+    files = document.querySelectorAll(".files article");
+
+    for (i = 0, len = files.length; i < len; i++) {
+        files[i].addEventListener("click", function() {
+            var sourcesel, sources,
+                index = Array.prototype.slice
+                    .call(this.parentNode.children, 0)
+                    .indexOf(this);
+
+            sources = document.querySelectorAll(".source section");
+            sourcesel = ".source section:nth-of-type(" + (index + 1) + ")";
+
+            for (i = 0, len = sources.length; i < len; i++) {
+                sources[i].style.display = "none";
+            }
+
+            for (i = 0, len = files.length; i < len; i++) {
+                files[i].classList.remove("selected");
+            }
+
+            this.classList.add("selected");
+            document.querySelector(sourcesel).style.display = "block";
+        });
     }
 })();

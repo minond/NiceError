@@ -1,86 +1,77 @@
-<?php
-function o($text)
-{
-    echo htmlspecialchars($text);
-}
-?><?php if ($fullhtml): ?>
+<!doctype html>
 <html>
     <head>
-        <title><?php o($errtype); ?>: <?php o($message); ?></title>
-        <link rel="icon" type="image/png" href="data:image/png;base64,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">
+        <title><?= $h($errtype); ?>: <?= $h($message); ?></title>
+        <link rel="icon" type="image/png" href="<?php include 'favicon.ico'; ?>">
     </head>
-<body>
-<?php endif ?>
-<style type="text/css">
-<?php include 'nice_error.css'; ?>
-</style>
-<div class="nice_error">
-    <div class="header">Application error - <?php o($errtype); ?></div>
-    <div class="description">
-        <table>
-            <tr>
-                <td>File:</td>
-                <td><?php o($file); ?></td>
-            </tr>
-            <tr>
-                <td>Line:</td>
-                <td><?php o($line); ?></td>
-            </tr>
-            <tr>
-                <td>Description:</td>
-                <td><?php o($message); ?></td>
-            </tr>
-            <?php if ($display_backtrace): ?>
-            <tr>
-                <td>Backtrace:</td>
-                <td>
-                    <ol>
-                    <?php foreach ($backtrace as $trace): ?>
-                        <?php if (isset($trace['file']) && $trace['file']): ?>
-                        <li>
-                            <span><?php o($trace['file']); ?>:<?php o($trace['line']); ?></span>
-                            <?php if (isset($trace['function']) && $trace['function']): ?>
-                            <span>- <span>
-                            <b>
-                                <?php if (isset($trace['class']) && $trace['class']): ?>
-                                    <span><?php o($trace['class']); ?></span><span><?php o($trace['type']); ?></span><span><?php o($trace['function']); ?></span>
-                                <?php else: ?>
-                                    <span><?php o($trace['function']); ?></span>
-                                <?php endif ?>
-                            </b>
+    <body>
+        <style type="text/css">
+        <?php include 'nice_error.css'; ?>
+        </style>
+        <div>
+            <h1>Application error: <?= $h($errtype) ?></h1>
+            <h3><?= $h($message) ?></h3>
+            <table>
+                <tr>
+                    <td class="files">
+                        <div>
+                            <?php foreach ($backtrace as $i => $trace): ?>
+                            <?php if ($i === 0): ?>
+                            <article class="selected">
+                            <?php else: ?>
+                            <article>
                             <?php endif ?>
-                        </li>
-                        <?php endif ?>
-                    <?php endforeach ?>
-                    </ol>
-                </td>
-            </tr>
-            <?php endif ?>
-        </table>
-    </div>
-    <?php if ($display_source): ?>
-    <div class="source">
-        <table>
-        <?php foreach ($source as $s_line): ?>
-            <?php if ($s_line['num'] == $line) :?>
-            <tr class="error-line">
-            <?php else: ?>
-            <tr>
-            <?php endif ?>
-                <td class="source-num"><?php o($s_line['num']); ?></td>
-                <td class="source-text">
-                    <pre><?php o($s_line['text']); ?></pre>
-                </td>
-            </tr>
-        <?php endforeach ?>
-        </table>
-    </div>
-    <?php endif ?>
-</div>
-<script type="text/javascript">
-<?php include 'nice_error.js'; ?>
-</script>
-<?php if ($fullhtml): ?>
-</body>
+                                <?php if ($s($trace, 'class') || $s($trace, 'function')): ?>
+                                <section>
+                                    <?php if ($s($trace, 'class')): ?>
+                                    <span><?= $trace['class'] ?></span>
+                                    <?php endif ?>
+                                    <?php if ($s($trace, 'function')): ?>
+                                    <span><?= $trace['function'] ?></span>
+                                    <?php endif ?>
+                                </section>
+                                <?php else: ?>
+                                <section>
+                                    <span class="call-class">{script}</span>
+                                </section>
+                                <?php endif ?>
+                                <section>
+                                    <span><?= $trace['file'] ?></span><span>:</span><span><?= $trace['line'] ?></span>
+                                </section>
+                            </article>
+                            <?php endforeach ?>
+                        </div>
+                    </td>
+                    <td class="source">
+                        <article>
+                            <?php foreach ($backtrace as $trace): ?>
+                            <section>
+                                <header>
+                                    <h2><?= $h($trace['file']) ?></h2>
+                                </header>
+                                <table>
+                                <?php foreach ($source($trace['file'], $trace['line'], 10) as $s_line): ?>
+                                    <?php if ($s_line['num'] == $trace['line']) :?>
+                                    <tr class="source-error">
+                                    <?php else: ?>
+                                    <tr>
+                                    <?php endif ?>
+                                        <td><?php $o($s_line['num']); ?></td>
+                                        <td>
+                                            <pre><?php $o($s_line['text']); ?></pre>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                                </table>
+                            </section>
+                            <?php endforeach ?>
+                        </article>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script type="text/javascript">
+        <?php include 'nice_error.js'; ?>
+        </script>
+    </body>
 </html>
-<?php endif ?>

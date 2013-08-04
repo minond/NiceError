@@ -1,88 +1,211 @@
-/* page styles */
+/*****************************************************************************\
+  $INDEX
+\*****************************************************************************/
+/**
+ * INDEX...................................................................this
+ * RESET..................normalize.css v1.0.0 | MIT License | git.io/normalize
+ * BASE................................................html and body tag styles
+ * FILES.....................................................files side section
+ * SOURCE...................................................source side section
+ * PHP..................................................php syntax highlighting
+ */
+
+
+/*****************************************************************************\
+  $RESET
+\*****************************************************************************/
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}
+audio,canvas,video{display:inline-block;*display:inline;*zoom:1}audio:not([controls]){display:none;height:0}
+[hidden]{display:none}
+html{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+html,button,input,select,textarea{font-family:sans-serif}
+body{margin:0}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+h2{font-size:1.5em;margin:.83em 0}
+h3{font-size:1.17em;margin:1em 0}
+h4{font-size:1em;margin:1.33em 0}
+h5{font-size:.83em;margin:1.67em 0}
+h6{font-size:.75em;margin:2.33em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+blockquote{margin:1em 40px}
+dfn{font-style:italic}
+mark{background:#ff0;color:#000}
+p,pre{margin:1em 0}
+code,kbd,pre,samp{font-family:monospace,serif;_font-family:'courier new',monospace;font-size:1em}
+pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}
+q{quotes:none}
+q:before,q:after{content:'';content:none}
+small{font-size:75%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-0.5em}
+sub{bottom:-0.25em}
+dl,menu,ol,ul{margin:1em 0}
+dd{margin:0 0 0 40px}
+menu,ol,ul{padding:0 0 0 40px}
+nav ul,nav ol{list-style:none;list-style-image:none}
+img{border:0;-ms-interpolation-mode:bicubic}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+form{margin:0}
+fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0;white-space:normal;*margin-left:-7px}
+button,input,select,textarea{font-size:100%;margin:0;vertical-align:baseline;*vertical-align:middle}
+button,input{line-height:normal}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer;*overflow:visible}
+button[disabled],input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0;*height:13px;*width:13px}
+input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+
+
+/*****************************************************************************\
+  $BASE
+\*****************************************************************************/
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 body {
 	overflow-y: scroll;
+    font: normal 0.8em monospace;
+    cursor: default;
+    padding: 0;
+    margin: 0;
 }
 
-.nice_error {
-	background-color: white;
-	border: 1px solid rgb(248, 234, 178);
-	margin: 18px 10px 18px 10px;
-	padding: 10px 10px 0px 10px;
-	font: 13px Arial;
-	cursor: default;
+body > div {
+    padding: 3em;
 }
 
-.nice_error .header {
-	border-bottom: 1px solid rgb(248, 234, 178);
-	margin: -10px -10px 10px -10px;
-	padding: 10px;
-	font-size: 16px;
-	color: #DC322F;
-	font-weight: bold;
+body > div > table {
+    margin-top: 3em;
+    width: 100%;
 }
 
-.nice_error .description tr td:nth-of-type(1) {
-	font: bold 15px Arial;
-	text-align: right;
-	padding: 2px 4px 2px 0px;
-	vertical-align: top;
-	color: #002B36;
+h1, h2 {
+    margin-top: 0;
 }
 
-.nice_error .description tr td:nth-of-type(2) {
-	word-break: break-all;
-	padding: 2px 0px 2px 4px;
-	vertical-align: top;
-	text-align: left;
-	color: #657B83;
-	font: normal 15px Arial;
+h1 {
+    color: #DC322F;
 }
 
-.nice_error .description tr td ol {
-	margin-left: -18px;
+h2 {
+    color: #586E75;
 }
 
-.nice_error .source {
-	font: 12px monospace;
-	margin-right: -10px;
-	margin-left: -20px;
-	margin-top: 10px;
-	border-top: 1px solid rgb(248, 234, 178);
-	padding: 4px 0px 4px 10px;
-	white-space: pre-line;
-	overflow: auto;
+h3 {
+    color: #657B83;
+    font-weight: normal;
 }
 
-.nice_error .source table {
-	border-collapse: collapse;
+pre {
+    margin: 0;
 }
 
-.nice_error .source table td.source-num {
-	width: 40px;
-	padding-right: 10px;
-	text-align: right;
-	color: gray;
-	vertical-align: top;
+
+
+/*****************************************************************************\
+  $FILES
+\*****************************************************************************/
+.files {
+    vertical-align: top;
+    width: 35em;
 }
 
-.nice_error .source table td.source-text pre {
-	word-break: break-word;
-	width: auto;
-	min-width: 620px;
-	margin-bottom: 0px;
-	white-space: pre-wrap;
+.files > div {
+    max-height: 50em;
+    overflow-y: auto;
 }
 
-.nice_error .source table tr.error-line td {
-    background-color: rgba(255, 224, 224, 0.6);
+.files article {
+    border-bottom: 1px solid #DFDFDF;
+    padding: 1em;
+    min-height: 2em;
+    cursor: pointer;
+    overflow: hidden;
 }
 
-.nice_error .source table tr.error-line td.source-num {
-	color: rgb(235, 7, 7);
-	font-weight: bold;
+.files article:first-child {
+    border-top: 1px solid #DFDFDF;
 }
 
-/* syntax */
+.files article:hover section:not(:first-child) span:first-child,
+.files article.selected section:not(:first-child) span:first-child {
+    text-decoration: underline;
+}
+
+.files section {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.files section span {
+    max-width: 30em;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.files section:first-child span {
+    font-weight: bold;
+}
+
+.files section:first-child span:first-child {
+    color: #2AA198
+}
+
+
+/*****************************************************************************\
+  $SOURCE
+\*****************************************************************************/
+.source table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.source h2 {
+    text-align: center;
+}
+
+.source,
+.source td {
+    vertical-align: top;
+    padding-left: 1em;
+    font-size: 1em;
+    height: 1.4em;
+}
+
+.source td:first-child {
+    color: #93A1A1;
+    width: 3em;
+    text-align: right;
+    font-size: 1.1em;
+}
+
+.source section {
+    display: none;
+}
+
+.source section:first-child {
+    display: block;
+}
+
+.source-error td {
+    background-color: rgba(255, 153, 153, 0.28);
+}
+
+
+/*****************************************************************************\
+  $PHP
+\*****************************************************************************/
 .hi-sl_comment,
 .hi-ml_comment_start,
 .hi-ml_comment_end,
@@ -118,10 +241,6 @@ body {
 .hi-func_calls {
 	color: rgb(14, 117, 143);
 	font-weight: normal;
-}
-
-.hi-characters {
-	/* font-weight: bold; */
 }
 
 .hi-specials {
