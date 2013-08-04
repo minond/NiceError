@@ -16,7 +16,7 @@ if ($domainconfig = getenv('NICE_ERROR_CONFIG')) {
     );
 }
 
-if ($config['core']['enabled']) {
+if ($config['NiceError']['enabled']) {
     $niceerror = new NiceError($config);
 
     error_reporting(E_ALL);

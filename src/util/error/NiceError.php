@@ -90,7 +90,7 @@ class NiceError
         };
 
         extract($args);
-        include $this->config['core']['base_dir'] . '/resources/nice_error.phtml';
+        include $this->config['NiceError']['base_dir'] . '/resources/nice_error.phtml';
         die;
     }
 
@@ -103,7 +103,7 @@ class NiceError
      */
     public function handleerror($errnum, $message, $file, $line)
     {
-        $errmsgs = $this->config['error']['label'];
+        $errmsgs = $this->config['NiceError']['label'];
         $errtype = array_key_exists($errnum, $errmsgs) ?
             $errmsgs[ $errnum ] : $errnum;
 
@@ -142,7 +142,7 @@ class NiceError
         }
 
         // prepend exception thrown location
-        array_shift($backtrace);
+        // array_shift($backtrace);
         array_unshift($backtrace, [
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
@@ -165,7 +165,7 @@ class NiceError
     public function handleshutdown()
     {
         $error = error_get_last();
-        $errmsgs = $this->config['error']['label'];
+        $errmsgs = $this->config['NiceError']['label'];
         $shutdown = [
             E_ERROR,
             E_WARNING,
