@@ -1,12 +1,12 @@
-# Nicer errors for PHP
+# NiceError
 
-Just include `"minond/nice_error": "dev-master"` in your composer file and that's it:
+Nicer errors for PHP. Just include `"minond/nice_error": "dev-master"` in your composer file and that's it:
 
 ```json
 {
-	    "require-dev": {
-			        "minond/nice_error": "dev-master"
-					    }
+	"require-dev": {
+		"minond/nice_error": "dev-master"
+	}
 }
 ```
 
