@@ -15,7 +15,7 @@
 			"util": "src/"
 		},
 		"files": [
-			"nice_error.php"
+			"autorun.php"
 		]
 	}
 }
