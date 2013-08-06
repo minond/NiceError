@@ -8,9 +8,9 @@ namespace util\error;
 class NiceError
 {
     /**
-     * @var string
+     * @var ErrorOutput
      */
-    protected $basedir;
+    protected $output;
 
     /**
      * @var array
@@ -57,31 +57,9 @@ class NiceError
     /**
      * @param array $config
      */
-    public function __construct($basedir)
+    public function __construct(ErrorOutput $output)
     {
-        $this->basedir = $basedir;
-    }
-
-    /**
-     * render the error page
-     * @param array $args
-     */
-    protected function displayError(array $args)
-    {
-        $file = $args['file'];
-        $line = $args['line'];
-        $errtype = $args['errtype'];
-        $message = $args['message'];
-
-        if (!isset($args['backtrace'])) {
-            $backtrace = [];
-        } else {
-            $backtrace = $args['backtrace'];
-        }
-
-        extract($args);
-        include $this->basedir . '/resources/nice_error.phtml';
-        die;
+        $this->output = $output;
     }
 
     /**
@@ -100,7 +78,7 @@ class NiceError
         $backtrace = debug_backtrace();
         array_shift($backtrace);
 
-        $this->displayError([
+        $this->output->render([
             'errtype' => $errtype,
             'message' => $message,
             'file' => $file,
@@ -139,7 +117,7 @@ class NiceError
             'function' => $function,
         ]);
 
-        $this->displayError([
+        $this->output->render([
             'errtype' => get_class($exception),
             'message' => $exception->getMessage(),
             'file' => $file,
@@ -164,7 +142,7 @@ class NiceError
                 return;
             }
 
-            $this->displayError([
+            $this->output->render([
                 'errtype' => $errtype,
                 'message' => $message,
                 'file' => $file,
