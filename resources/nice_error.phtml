@@ -1,5 +1,36 @@
 <!doctype html>
 <html>
+<?php
+
+$o = function($text) {
+    echo htmlspecialchars($text);
+};
+
+$h = function($text) {
+    return htmlspecialchars($text);
+};
+
+$s = function($obj, $key) {
+    return isset($obj[ $key ]) && $obj[ $key ];
+};
+
+$source = function($file, $line, $offset = 10) {
+    $source = [];
+    $lines = explode(PHP_EOL, file_get_contents($file));
+    $i = $line - $offset;
+    $max = $line + $offset + 1;
+
+    for (; $i < $max; $i++)
+        if (isset($lines[ $i - 1 ]))
+            $source[] = [
+                'text' => $lines[ $i - 1 ],
+                'num' => $i,
+            ];
+
+    return $source;
+};
+
+?>
     <head>
         <title><?= $h($errtype); ?>: <?= $h($message); ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">

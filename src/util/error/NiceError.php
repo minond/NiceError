@@ -8,47 +8,65 @@ namespace util\error;
 class NiceError
 {
     /**
+     * @var string
+     */
+    protected $basedir;
+
+    /**
      * @var array
      */
-    protected $config;
+    protected $errmsgs = [
+        E_ERROR => 'Fatal run-time error',
+        E_WARNING => 'Run-time warning',
+        E_PARSE => 'Compile-time parse error',
+        E_NOTICE => 'Run-time notice',
+        E_CORE_ERROR => 'Initial startup fatal error',
+        E_CORE_WARNING => 'Warning',
+        E_COMPILE_ERROR => 'Fatal compile-time error',
+        E_COMPILE_WARNING => 'Compile-time warning',
+        E_USER_ERROR => 'User-generated error',
+        E_USER_WARNING => 'User-generated warning',
+        E_USER_NOTICE => 'User-generated notice',
+        E_STRICT => 'Strict mode warning',
+        E_RECOVERABLE_ERROR => 'Catchable fatal error',
+        E_DEPRECATED => 'Run-time notice',
+        E_USER_DEPRECATED => 'User-generated warning',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $shutdown = [
+        E_ERROR,
+        E_WARNING,
+        E_PARSE,
+        E_NOTICE,
+        E_CORE_ERROR,
+        E_CORE_WARNING,
+        E_COMPILE_ERROR,
+        E_COMPILE_WARNING,
+        E_USER_ERROR,
+        E_USER_WARNING,
+        E_USER_NOTICE,
+        E_STRICT,
+        E_RECOVERABLE_ERROR,
+        E_DEPRECATED,
+        E_USER_DEPRECATED,
+    ];
 
     /**
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct($basedir)
     {
-        $this->config = $config;
-    }
-
-    /**
-     * source contents getter
-     * @param string file
-     * @param int $line
-     * @param int $offset - optional, default = 10
-     * @return string
-     */
-    protected function getsource($file, $line, $offset = 10)
-    {
-        $source = [];
-        $lines = explode(PHP_EOL, file_get_contents($file));
-        $i = $line - $offset;
-        $max = $line + $offset + 1;
-
-        for (; $i < $max; $i++)
-            if (isset($lines[ $i - 1 ]))
-                $source[] = [
-                    'text' => $lines[ $i - 1 ],
-                    'num' => $i,
-                ];
-
-        return $source;
+        $this->basedir = $basedir;
     }
 
     /**
      * render the error page
      * @param array $args
      */
-    protected function renderview(array $args)
+    protected function displayError(array $args)
     {
         $file = $args['file'];
         $line = $args['line'];
@@ -61,36 +79,8 @@ class NiceError
             $backtrace = $args['backtrace'];
         }
 
-        $o = function($text) {
-            echo htmlspecialchars($text);
-        };
-
-        $h = function($text) {
-            return htmlspecialchars($text);
-        };
-
-        $s = function($obj, $key) {
-            return isset($obj[ $key ]) && $obj[ $key ];
-        };
-
-        $source = function($file, $line, $offset = 10) {
-            $source = [];
-            $lines = explode(PHP_EOL, file_get_contents($file));
-            $i = $line - $offset;
-            $max = $line + $offset + 1;
-
-            for (; $i < $max; $i++)
-                if (isset($lines[ $i - 1 ]))
-                    $source[] = [
-                        'text' => $lines[ $i - 1 ],
-                        'num' => $i,
-                    ];
-
-            return $source;
-        };
-
         extract($args);
-        include $this->config['NiceError']['base_dir'] . '/resources/nice_error.phtml';
+        include $this->basedir . '/resources/nice_error.phtml';
         die;
     }
 
@@ -101,17 +91,16 @@ class NiceError
      * @param string $file
      * @param string $line
      */
-    public function handleerror($errnum, $message, $file, $line)
+    public function handleError($errnum, $message, $file, $line)
     {
-        $errmsgs = $this->config['NiceError']['label'];
-        $errtype = array_key_exists($errnum, $errmsgs) ?
-            $errmsgs[ $errnum ] : $errnum;
+        $errtype = array_key_exists($errnum, $this->errmsgs) ?
+            $this->errmsgs[ $errnum ] : $errnum;
 
         // remove this function
         $backtrace = debug_backtrace();
         array_shift($backtrace);
 
-        $this->renderview([
+        $this->displayError([
             'errtype' => $errtype,
             'message' => $message,
             'file' => $file,
@@ -124,7 +113,7 @@ class NiceError
      * uncaught exception handler
      * @param Exception $exception
      */
-    public function handleexception($exception)
+    public function handleException($exception)
     {
         $backtrace = $exception->getTrace();
         $class = '';
@@ -150,7 +139,7 @@ class NiceError
             'function' => $function,
         ]);
 
-        $this->renderview([
+        $this->displayError([
             'errtype' => get_class($exception),
             'message' => $exception->getMessage(),
             'file' => $file,
@@ -162,42 +151,25 @@ class NiceError
     /**
      * shutdown handler
      */
-    public function handleshutdown()
+    public function handleShutdown()
     {
         $error = error_get_last();
-        $errmsgs = $this->config['NiceError']['label'];
-        $shutdown = [
-            E_ERROR,
-            E_WARNING,
-            E_PARSE,
-            E_NOTICE,
-            E_CORE_ERROR,
-            E_CORE_WARNING,
-            E_COMPILE_ERROR,
-            E_COMPILE_WARNING,
-            E_USER_ERROR,
-            E_USER_WARNING,
-            E_USER_NOTICE,
-            E_STRICT,
-            E_RECOVERABLE_ERROR,
-            E_DEPRECATED,
-            E_USER_DEPRECATED,
-        ];
 
         if (!is_null($error)) {
             extract($error);
-            $errtype = array_key_exists($type, $errmsgs) ?
-                $errmsgs[ $type ] : $type;
+            $errtype = array_key_exists($type, $this->errmsgs) ?
+                $this->errmsgs[ $type ] : $type;
 
-            if (!in_array($type, $shutdown)) {
+            if (!in_array($type, $this->shutdown)) {
                 return;
             }
 
-            $this->renderview([
+            $this->displayError([
                 'errtype' => $errtype,
                 'message' => $message,
                 'file' => $file,
                 'line' => $line,
+                'backtrace' => [ $error ]
             ]);
         }
     }
