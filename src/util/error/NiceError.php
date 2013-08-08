@@ -2,6 +2,8 @@
 
 namespace util\error;
 
+use util\Error;
+
 /**
  * error handlers
  */
@@ -78,13 +80,11 @@ class NiceError
         $backtrace = debug_backtrace();
         array_shift($backtrace);
 
-        $this->output->render([
+        $this->output->render(new Error([
             'errtype' => $errtype,
             'message' => $message,
-            'file' => $file,
-            'line' => $line,
             'backtrace' => $backtrace,
-        ]);
+        ]));
     }
 
     /**
@@ -117,13 +117,11 @@ class NiceError
             'function' => $function,
         ]);
 
-        $this->output->render([
+        $this->output->render(new Error([
             'errtype' => get_class($exception),
             'message' => $exception->getMessage(),
-            'file' => $file,
-            'line' => $line,
             'backtrace' => $backtrace,
-        ]);
+        ]));
     }
 
     /**
@@ -142,13 +140,11 @@ class NiceError
                 return;
             }
 
-            $this->output->render([
+            $this->output->render(new Error([
                 'errtype' => $errtype,
                 'message' => $message,
-                'file' => $file,
-                'line' => $line,
                 'backtrace' => [ $error ]
-            ]);
+            ]));
         }
     }
 }

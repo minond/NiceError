@@ -32,22 +32,22 @@ $source = function($file, $line, $offset = 10) {
 
 ?>
     <head>
-        <title><?= $h($errtype); ?>: <?= $h($message); ?></title>
+        <title><?= $h($error->errtype); ?>: <?= $h($error->message); ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <link rel="icon" type="image/png" href="<?php include 'favicon.ico'; ?>">
     </head>
     <body>
         <style type="text/css">
-        <?php include 'nice_error.css'; ?>
+        <?php include 'styles.css'; ?>
         </style>
         <div>
-            <h1>Application error: <?= $h($errtype) ?></h1>
-            <h3><?= $h($message) ?></h3>
+            <h1>Application error: <?= $h($error->errtype) ?></h1>
+            <h3><?= $h($error->message) ?></h3>
             <table>
                 <tr>
                     <td class="files">
                         <div>
-                            <?php foreach ($backtrace as $i => $trace): ?>
+                            <?php foreach ($error->backtrace as $i => $trace): ?>
                             <?php if ($i === 0): ?>
                             <article class="selected">
                             <?php else: ?>
@@ -76,7 +76,7 @@ $source = function($file, $line, $offset = 10) {
                     </td>
                     <td class="source">
                         <article>
-                            <?php foreach ($backtrace as $trace): ?>
+                            <?php foreach ($error->backtrace as $trace): ?>
                             <section>
                                 <header>
                                     <h2><?= $h($trace['file']) ?></h2>
@@ -103,7 +103,7 @@ $source = function($file, $line, $offset = 10) {
             </table>
         </div>
         <script type="text/javascript">
-        <?php include 'nice_error.js'; ?>
+        <?php include 'javascript.js'; ?>
         </script>
     </body>
 </html>

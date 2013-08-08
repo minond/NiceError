@@ -2,6 +2,7 @@
 
 namespace util\error;
 
+require_once 'src/util/Error.php';
 require_once 'src/util/error/ErrorOutput.php';
 require_once 'src/util/error/FancyTemplateOutput.php';
 require_once 'src/util/error/NiceError.php';
@@ -14,9 +15,7 @@ if (php_sapi_name() !== 'cli') {
     $accepts = isset($headers['Accept']) ? $headers['Accept'] : '';
 
     if (strpos($accepts, 'text/html') !== false) {
-        $niceerror = new NiceError(
-            new FancyTemplateOutput(
-                __DIR__ . '/resources/nice_error.phtml'));
+        $niceerror = new NiceError(new FancyTemplateOutput);
     }
 }
 

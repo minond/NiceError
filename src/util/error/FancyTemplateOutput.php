@@ -2,32 +2,20 @@
 
 namespace util\error;
 
+use util\Error;
+
 /**
  * nice html output
  */
 class FancyTemplateOutput implements ErrorOutput
 {
     /**
-     * path to template file
-     * @var string
-     */
-    protected $template;
-
-    /**
-     * @param string $template
-     */
-    public function __construct($template)
-    {
-        $this->template = $template;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public function render(array $error)
+    public function render(Error $error)
     {
-        extract($error);
-        include $this->template;
+        // error/util/src/./resources/fancy
+        include __dir__ . '/../../../resources/fancy/template.phtml';
         die;
     }
 }
