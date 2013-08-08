@@ -11,4 +11,7 @@ Nicer errors for PHP. Just include `"minond/nice_error": "dev-master"` in your c
 ```
 
 <br />
+![screenshot](https://raw.github.com/minond/NiceError/master/resources/readme/screenshot.png)
+
+<br />
 Inspired by [Better Errors](https://github.com/charliesome/better_errors).
