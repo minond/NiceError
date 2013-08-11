@@ -140,6 +140,11 @@ class NiceError
                 return;
             }
 
+            // I don't like it, but it'll do for now.
+            if ($message = 'Module \'xdebug\' already loaded') {
+                return;
+            }
+
             $this->output->render(new Error([
                 'errtype' => $errtype,
                 'message' => $message,
