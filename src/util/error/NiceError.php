@@ -97,7 +97,7 @@ class NiceError
         $class = '';
         $function = '';
 
-        if (count($backtrace)) {
+        if (count($backtrace) && isset($backtrace[0]['line'])) {
             $file = $backtrace[0]['file'];
             $line = $backtrace[0]['line'];
             $class = $backtrace[0]['class'];
