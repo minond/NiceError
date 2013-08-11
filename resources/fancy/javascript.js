@@ -4,7 +4,7 @@
 
     matchers = {
         ml_comment_start: { r: /^\s{0,}(\/\*\*)/ },
-        ml_comment_body: { r: /^\s{0,}(\*.+)/, o: ["annotations"] },
+        ml_comment_body: { r: /^\s{0,}(\*.{0,})/, o: ["annotations"] },
         ml_comment_end: { r: /^\s{0,}(\*\/)/ },
         sl_comment: { r: /^\s{0,}(\/\/.+)/, o: ["annotations"] },
         variables: { r: /(\$[a-zA-Z\$_]+)/ },

@@ -16,16 +16,19 @@ $s = function($obj, $key) {
 
 $source = function($file, $line, $offset = 10) {
     $source = [];
-    $lines = explode(PHP_EOL, file_get_contents($file));
-    $i = $line - $offset;
-    $max = $line + $offset + 1;
 
-    for (; $i < $max; $i++)
-        if (isset($lines[ $i - 1 ]))
-            $source[] = [
-                'text' => $lines[ $i - 1 ],
-                'num' => $i,
-            ];
+    if (file_exists($file) && is_readable($file)) {
+        $lines = explode(PHP_EOL, file_get_contents($file));
+        $i = $line - $offset;
+        $max = $line + $offset + 1;
+
+        for (; $i < $max; $i++)
+            if (isset($lines[ $i - 1 ]))
+                $source[] = [
+                    'text' => $lines[ $i - 1 ],
+                    'num' => $i,
+                ];
+    }
 
     return $source;
 };
@@ -67,9 +70,21 @@ $source = function($file, $line, $offset = 10) {
                                     <span class="call-class">{script}</span>
                                 </section>
                                 <?php endif ?>
+                                <?php if ($s($trace, 'file') || $s($trace, 'line')): ?>
                                 <section>
-                                    <span><?= $trace['file'] ?></span><span>:</span><span><?= $trace['line'] ?></span>
+                                    <?php if ($s($trace, 'file')): ?>
+                                    <span title="<?= $h($trace['file']) ?>">
+                                    <?= str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $trace['file']) ?>
+                                    <?php else: ?>
+                                    <span>
+                                    <?php endif ?>
+                                    </span><span>:</span><span>
+                                    <?php if ($s($trace, 'line')): ?>
+                                    <?= $trace['line'] ?>
+                                    <?php endif ?>
+                                    </span>
                                 </section>
+                                <?php endif ?>
                             </article>
                             <?php endforeach ?>
                         </div>
@@ -79,9 +94,12 @@ $source = function($file, $line, $offset = 10) {
                             <?php foreach ($error->backtrace as $trace): ?>
                             <section>
                                 <header>
+                                    <?php if ($s($trace, 'file')): ?>
                                     <h2><?= $h($trace['file']) ?></h2>
+                                    <?php endif ?>
                                 </header>
                                 <table>
+                                <?php if ($s($trace, 'file') && $s($trace, 'line')): ?>
                                 <?php foreach ($source($trace['file'], $trace['line'], 10) as $s_line): ?>
                                     <?php if ($s_line['num'] == $trace['line']) :?>
                                     <tr class="source-error">
@@ -94,6 +112,7 @@ $source = function($file, $line, $offset = 10) {
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
+                                <?php endif ?>
                                 </table>
                             </section>
                             <?php endforeach ?>
