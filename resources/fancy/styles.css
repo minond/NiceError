@@ -69,46 +69,46 @@ table{border-collapse:collapse;border-spacing:0}
   $BASE
 \*****************************************************************************/
 html, body {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 body {
-	overflow-y: scroll;
-	font: normal 0.8em monospace;
-	cursor: default;
-	padding: 0;
-	margin: 0;
+    overflow-y: scroll;
+    font: normal 0.8em monospace;
+    cursor: default;
+    padding: 0;
+    margin: 0;
 }
 
 body > div {
-	padding: 3em;
+    padding: 3em;
 }
 
 body > div > table {
-	margin-top: 3em;
-	width: 100%;
+    margin-top: 3em;
+    width: 100%;
 }
 
 h1, h2 {
-	margin-top: 0;
+    margin-top: 0;
 }
 
 h1 {
-	color: #DC322F;
+    color: #DC322F;
 }
 
 h2 {
-	color: #586E75;
+    color: #586E75;
 }
 
 h3 {
-	color: #657B83;
-	font-weight: normal;
+    color: #657B83;
+    font-weight: normal;
 }
 
 pre {
-	margin: 0;
+    margin: 0;
 }
 
 
@@ -117,51 +117,52 @@ pre {
   $FILES
 \*****************************************************************************/
 .files {
-	vertical-align: top;
-	width: 35em;
-	padding-top: 3.6em;
+    vertical-align: top;
+    width: 35em;
+    padding-top: 3.6em;
 }
 
 .files > div {
-	max-height: 50em;
-	overflow-y: auto;
+    max-height: 50em;
+    overflow-y: auto;
 }
 
 .files article {
-	border-bottom: 1px solid #DFDFDF;
-	padding: 1em;
-	min-height: 2em;
-	cursor: pointer;
-	overflow: hidden;
+    border-bottom: 1px solid #DFDFDF;
+    padding: 1em;
+    min-height: 2em;
+    cursor: pointer;
+    overflow: hidden;
+    width: 30em;
 }
 
 .files article:first-child {
-	border-top: 1px solid #DFDFDF;
+    border-top: 1px solid #DFDFDF;
 }
 
 .files article:hover section:not(:first-child) span:first-child,
 .files article.selected section:not(:first-child) span:first-child {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .files section {
-	text-overflow: ellipsis;
-	overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .files section span {
-	max-width: 27em;
-	display: inline-block;
-	overflow: hidden;
-	text-overflow: ellipsis;
+    max-width: 27em;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .files section:first-child span {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .files section:first-child span:first-child {
-	color: #2AA198
+    color: #2AA198
 }
 
 
@@ -169,39 +170,39 @@ pre {
   $SOURCE
 \*****************************************************************************/
 .source table {
-	border-collapse: collapse;
-	width: 100%;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .source h2 {
-	text-align: center;
+    text-align: center;
 }
 
 .source,
 .source td {
-	vertical-align: top;
-	padding-left: 1em;
-	font-size: 1em;
-	height: 1.4em;
+    vertical-align: top;
+    padding-left: 1em;
+    font-size: 1em;
+    height: 1.4em;
 }
 
 .source td:first-child {
-	color: #93A1A1;
-	width: 3em;
-	text-align: right;
-	font-size: 1.1em;
+    color: #93A1A1;
+    width: 3em;
+    text-align: right;
+    font-size: 1.1em;
 }
 
 .source section {
-	display: none;
+    display: none;
 }
 
 .source section:first-child {
-	display: block;
+    display: block;
 }
 
 .source-error td {
-	background-color: rgba(255, 153, 153, 0.28);
+    background-color: rgba(255, 153, 153, 0.28);
 }
 
 
@@ -212,58 +213,58 @@ pre {
 .hi-ml_comment_start,
 .hi-ml_comment_end,
 .hi-ml_comment_body {
-	color: gray;
+    color: gray;
 }
 
 .hi-annotations {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .hi-keywords {
-	color: rgb(7, 7, 111);
-	font-weight: bold;
+    color: rgb(7, 7, 111);
+    font-weight: bold;
 }
 
 .hi-variables,
 .hi-properties {
-	color: rgb(14, 117, 143);
+    color: rgb(14, 117, 143);
 }
 
 .hi-class_names {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .hi-func_names {
-	font-weight: bold;
-	color: rgb(153, 9, 9);
+    font-weight: bold;
+    color: rgb(153, 9, 9);
 }
 
 .hi-func_calls .hi-keywords,
 .hi-func_calls .hi-constant,
 .hi-func_calls {
-	color: rgb(14, 117, 143);
-	font-weight: normal;
+    color: rgb(14, 117, 143);
+    font-weight: normal;
 }
 
 .hi-specials {
-	font-style: italic;
-	color: rgb(90, 35, 35);
+    font-style: italic;
+    color: rgb(90, 35, 35);
 }
 
 .hi-constant {
-	color: rgb(241, 12, 12);
-	font-weight: bold;
+    color: rgb(241, 12, 12);
+    font-weight: bold;
 }
 
 .hi-strings,
 .hi-strings .hi {
-	color: rgb(240, 113, 99);
-	font-weight: normal;
+    color: rgb(240, 113, 99);
+    font-weight: normal;
 }
 
 .hi-numbers {
-	color: rgb(192, 30, 30);
-	font-weight: bold;
+    color: rgb(192, 30, 30);
+    font-weight: bold;
 }
 
 
@@ -275,8 +276,8 @@ and (min-device-width : 320px)
 and (max-device-width : 480px),
 screen and (min-device-width : 768px)
 and (max-device-width : 1024px) {
-	.files,
-	.source {
-		display: none;
-	}
+    .files,
+    .source {
+        display: none;
+    }
 }

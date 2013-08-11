@@ -95,7 +95,7 @@ $source = function($file, $line, $offset = 10) {
                             <section>
                                 <header>
                                     <?php if ($s($trace, 'file')): ?>
-                                    <h2><?= $h($trace['file']) ?></h2>
+                                    <h2><?= $h(str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $trace['file'])) ?></h2>
                                     <?php endif ?>
                                 </header>
                                 <table>
