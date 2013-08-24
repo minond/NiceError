@@ -141,7 +141,7 @@ class NiceError
             }
 
             // I don't like it, but it'll do for now.
-            if ($message = 'Module \'xdebug\' already loaded') {
+            if ($message === 'Module \'xdebug\' already loaded') {
                 return;
             }
 
