@@ -73,17 +73,11 @@ class NiceError
      */
     public function handleError($errnum, $message, $file, $line)
     {
-        $errtype = array_key_exists($errnum, $this->errmsgs) ?
-            $this->errmsgs[ $errnum ] : $errnum;
-
-        // remove this function
-        $backtrace = debug_backtrace();
-        array_shift($backtrace);
-
         $this->output->render(new Error([
-            'errtype' => $errtype,
             'message' => $message,
-            'backtrace' => $backtrace,
+            'backtrace' => debug_backtrace(),
+            'errtype' => array_key_exists($errnum, $this->errmsgs) ?
+                $this->errmsgs[ $errnum ] : $errnum,
         ]));
     }
 
