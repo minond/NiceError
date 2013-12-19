@@ -1,6 +1,6 @@
 # NiceError
 
-Nicer errors for PHP. Just include `"minond/nice_error": "dev-master"` in your composer file and that's it:
+Nicer errors for PHP. Just include `"minond/nice_error": "dev-master"` in your composer file, set the NICE_ERRORS to "1", and that's it:
 
 ```json
 {

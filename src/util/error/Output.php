@@ -2,12 +2,10 @@
 
 namespace util\error;
 
-use util\Error;
-
 /**
  * error output base
  */
-interface ErrorOutput
+interface Output
 {
     /**
      * process error information and send to client

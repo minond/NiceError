@@ -1,6 +1,6 @@
 <?php
 
-namespace util;
+namespace util\error;
 
 /**
  * represents error data

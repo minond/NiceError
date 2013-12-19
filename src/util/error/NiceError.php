@@ -2,8 +2,6 @@
 
 namespace util\error;
 
-use util\Error;
-
 /**
  * error handlers
  */
@@ -59,7 +57,7 @@ class NiceError
     /**
      * @param array $config
      */
-    public function __construct(ErrorOutput $output)
+    public function __construct(Output $output)
     {
         $this->output = $output;
     }
