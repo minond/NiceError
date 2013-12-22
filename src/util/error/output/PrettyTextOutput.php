@@ -91,7 +91,7 @@ class PrettyTextOutput implements Output
             $date, $addr, $port, $err, $msg));
 
         // backtrace
-        foreach ($error->backtrace as $trace) {
+        foreach ($error->backtrace as $i => $trace) {
             $file = $this->getVal($trace, 'file');
             $file = str_replace($dir, '', $file);
             $line = $this->getVal($trace, 'line');
@@ -104,8 +104,8 @@ class PrettyTextOutput implements Output
                 $function = $clazz . $type . $function;
             }
 
-            fwrite($stderr, sprintf(" - %s [%s:%s]\n",
-                $function, $file, $line));
+            fwrite($stderr, sprintf("  #%s %s [%s:%s]\n",
+                $i + 1, $function, $file, $line));
         }
     }
 
