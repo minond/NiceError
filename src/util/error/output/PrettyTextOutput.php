@@ -85,10 +85,15 @@ class PrettyTextOutput implements Output
         $port = $_SERVER['SERVER_PORT'];
         $date = date('D M d H:i:s Y');
 
+        // to make error stand out:
+        $prettyerr = strtoupper($err);
+        $prettyerr = str_replace(' ', '-', $prettyerr);
+        $prettyerr = sprintf("\033[%sm%s\033[0m", '1;31', $prettyerr);
+
         // output from php -S:
-        // [Sat Dec 21 21:54:56 2013] 127.0.0.1:60752 Invalid request (...)
-        fwrite($stderr, sprintf("[%s] %s:%s %s (%s)\n",
-            $date, $addr, $port, $err, $msg));
+        // [Sat Dec 21 21:54:56 2013] 127.0.0.1:60752 Invalid request ...
+        fwrite($stderr, sprintf("[%s] %s:%s %s %s\n",
+            $date, $addr, $port, $prettyerr, $msg));
 
         // backtrace
         foreach ($error->backtrace as $i => $trace) {
