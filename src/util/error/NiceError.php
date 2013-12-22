@@ -8,9 +8,9 @@ namespace util\error;
 class NiceError
 {
     /**
-     * @var ErrorOutput
+     * @var Output[]
      */
-    protected $output;
+    protected $outputs;
 
     /**
      * @var array
@@ -55,11 +55,19 @@ class NiceError
     ];
 
     /**
-     * @param array $config
+     * @param Output[] $outputs
      */
-    public function __construct(Output $output)
+    public function __construct(array $outputs = [])
     {
-        $this->output = $output;
+        $this->outputs = $outputs;
+    }
+
+    /**
+     * @param Output $output
+     */
+    public function addOutput(Output $output)
+    {
+        $this->outputs[] = $output;
     }
 
     /**
@@ -71,7 +79,7 @@ class NiceError
      */
     public function handleError($errnum, $message, $file, $line)
     {
-        $this->output->render(new Error([
+        $this->render(new Error([
             'message' => $message,
             'backtrace' => debug_backtrace(),
             'errtype' => array_key_exists($errnum, $this->errmsgs) ?
@@ -109,7 +117,7 @@ class NiceError
             'function' => $function,
         ]);
 
-        $this->output->render(new Error([
+        $this->render(new Error([
             'errtype' => get_class($exception),
             'message' => $exception->getMessage(),
             'backtrace' => $backtrace,
@@ -137,12 +145,26 @@ class NiceError
                 return;
             }
 
-            $this->output->render(new Error([
+            $this->render(new Error([
                 'errtype' => $errtype,
                 'message' => $message,
                 'backtrace' => [ $error ]
             ]));
         }
+    }
+
+    /**
+     * loop through all output objects and render the error
+     * @param Error $error
+     */
+    protected function render(Error $error)
+    {
+        foreach ($this->outputs as & $output) {
+            $output->render($error);
+            unset($output);
+        }
+
+        die;
     }
 }
 

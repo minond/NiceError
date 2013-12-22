@@ -16,7 +16,6 @@ class FancyTemplateOutput implements Output
     public function render(Error $error)
     {
         include __dir__ . '/fancy/template.phtml';
-        die;
     }
 }
 
