@@ -13,8 +13,6 @@ Nicer errors for PHP. Just include `"minond/nice_error": "dev-master"` in your c
 ```text
 NICE_ERRORS=1 php your_php_script.php
 ```
-
-<br />
 ### Browser output
 ![screenshot](https://raw.github.com/minond/NiceError/master/resources/readme/browser.png)
 
