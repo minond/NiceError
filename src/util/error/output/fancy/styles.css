@@ -262,6 +262,12 @@ pre {
     font-weight: normal;
 }
 
+/* variables inside of strings */
+.hi-strings .hi-variables,
+.hi-strings .hi-properties {
+    color: rgb(14, 117, 143);
+}
+
 .hi-numbers {
     color: rgb(192, 30, 30);
     font-weight: bold;

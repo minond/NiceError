@@ -98,10 +98,10 @@ class NiceError
         $function = '';
 
         if (count($backtrace) && isset($backtrace[0]['line'])) {
-            $file = $backtrace[0]['file'];
-            $line = $backtrace[0]['line'];
-            $class = $backtrace[0]['class'];
-            $function = $backtrace[0]['function'];
+            $file = $this->getVal($backtrace, [ 0, 'file' ]);
+            $line = $this->getVal($backtrace, [ 0, 'line' ]);
+            $class = $this->getVal($backtrace, [ 0, 'class' ]);
+            $function = $this->getVal($backtrace, [ 0, 'function' ]);
         } else {
             $file = $exception->getFile();
             $line = $exception->getLine();
@@ -165,6 +165,28 @@ class NiceError
         }
 
         die;
+    }
+
+    /**
+     * get an array value if keys are set
+     * @param array $var
+     * @param array $path
+     * @return mixed
+     */
+    protected function getVal($var, array $path)
+    {
+        $val = $var;
+
+        foreach ($path as $key) {
+            if (isset($val[ $key ])) {
+                $val = $val[ $key ];
+            } else {
+                $val = null;
+                break;
+            }
+        }
+
+        return $val;
     }
 }
 
