@@ -5,6 +5,7 @@
  * INDEX...................................................................this
  * RESET..................normalize.css v1.0.0 | MIT License | git.io/normalize
  * BASE................................................html and body tag styles
+ * DISPLAYED.....................hide everything except for nice error elements
  * FILES.....................................................files side section
  * SOURCE...................................................source side section
  * PHP..................................................php syntax highlighting
@@ -111,6 +112,19 @@ pre {
     margin: 0;
 }
 
+
+/*****************************************************************************\
+  $DISPLAYED
+\*****************************************************************************/
+html body * {
+    visibility: hidden;
+    position: absolute;
+}
+
+.nice_error, .nice_error * {
+    visibility: initial;
+    position: relative;
+}
 
 
 /*****************************************************************************\
