@@ -17,7 +17,7 @@ if (enabled()) {
     }
 
     // php's server cli output
-    if (php_sapi_name() === 'cli-server') {
+    if (php_sapi_name() === 'cli-server' || php_sapi_name() === 'cli') {
         $handler->addOutput(new output\PrettyTextOutput);
     }
 

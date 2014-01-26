@@ -81,8 +81,9 @@ class PrettyTextOutput implements Output
         //     [REQUEST_TIME_FLOAT] => 1387688171.964
         //     [REQUEST_TIME] => 1387688171
         // )
-        $addr = $_SERVER['SERVER_NAME'];
-        $port = $_SERVER['SERVER_PORT'];
+        $addr = $this->getVal($_SERVER, 'SERVER_NAME');
+        $port = $this->getVal($_SERVER, 'SERVER_PORT');
+        $host = $addr ? sprintf(' %s:%s ', $addr, $port) : ' ';
         $date = date('D M d H:i:s Y');
 
         // to make error stand out:
@@ -92,8 +93,8 @@ class PrettyTextOutput implements Output
 
         // output from php -S:
         // [Sat Dec 21 21:54:56 2013] 127.0.0.1:60752 Invalid request ...
-        fwrite($stderr, sprintf("[%s] %s:%s %s %s\n",
-            $date, $addr, $port, $prettyerr, $msg));
+        fwrite($stderr, sprintf("[%s]%s%s %s\n",
+            $date, $host, $prettyerr, $msg));
 
         // backtrace
         foreach ($error->backtrace as $i => $trace) {
