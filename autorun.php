@@ -2,6 +2,7 @@
 
 namespace util\error;
 
+require_once 'src/util/error/Helper.php';
 require_once 'src/util/error/Error.php';
 require_once 'src/util/error/NiceError.php';
 require_once 'src/util/error/Output.php';
@@ -29,29 +30,5 @@ if (Helper::enabled()) {
     // disable all other error outputs
     ini_set('display_errors', false);
     ini_set('error_log', '/dev/null');
-}
-
-class Helper
-{
-    /**
-     * can we send html output?
-     * @return boolean
-     */
-    public static function acceptsHtml()
-    {
-        return isset($_SERVER['HTTP_ACCEPT']) &&
-            strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false;
-    }
-
-    /**
-     * is NiceError enabled?
-     * @return boolean
-     */
-    public static function enabled()
-    {
-        // xxx: why do I need to check $_ENV and getenv????
-        return (isset($_ENV['NICE_ERRORS']) && $_ENV['NICE_ERRORS']) ||
-            getenv('NICE_ERRORS');
-    }
 }
 
