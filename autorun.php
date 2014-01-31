@@ -8,11 +8,11 @@ require_once 'src/util/error/Output.php';
 require_once 'src/util/error/output/FancyTemplateOutput.php';
 require_once 'src/util/error/output/PrettyTextOutput.php';
 
-if (enabled()) {
+if (Helper::enabled()) {
     $handler = new NiceError;
 
     // browser output
-    if (php_sapi_name() !== 'cli' && acceptsHtml()) {
+    if (php_sapi_name() !== 'cli' && Helper::acceptsHtml()) {
         $handler->addOutput(new output\FancyTemplateOutput);
     }
 
@@ -31,24 +31,27 @@ if (enabled()) {
     ini_set('error_log', '/dev/null');
 }
 
-/**
- * can we send html output?
- * @return boolean
- */
-function acceptsHtml()
+class Helper
 {
-    return isset($_SERVER['HTTP_ACCEPT']) &&
-        strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false;
-}
+    /**
+     * can we send html output?
+     * @return boolean
+     */
+    public static function acceptsHtml()
+    {
+        return isset($_SERVER['HTTP_ACCEPT']) &&
+            strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false;
+    }
 
-/**
- * is NiceError enabled?
- * @return boolean
- */
-function enabled()
-{
-    // xxx: why do I need to check $_ENV and getenv????
-    return (isset($_ENV['NICE_ERRORS']) && $_ENV['NICE_ERRORS']) ||
-        getenv('NICE_ERRORS');
+    /**
+     * is NiceError enabled?
+     * @return boolean
+     */
+    public static function enabled()
+    {
+        // xxx: why do I need to check $_ENV and getenv????
+        return (isset($_ENV['NICE_ERRORS']) && $_ENV['NICE_ERRORS']) ||
+            getenv('NICE_ERRORS');
+    }
 }
 
