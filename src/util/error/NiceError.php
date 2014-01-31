@@ -111,8 +111,8 @@ class NiceError
 
         // prepend exception thrown location
         array_unshift($backtrace, [
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
+            'file' => $file,
+            'line' => $line,
             'class' => $class,
             'function' => $function,
         ]);
