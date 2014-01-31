@@ -18,8 +18,7 @@ class PrettyTextOutput implements Output
         $stderr = fopen('php://stderr', 'w');
         $dir = getcwd();
 
-        // error:
-        // util\error\Error Object
+        // error: util\error\Error Object
         // (
         //     [errtype] => Exception
         //     [message] => Invalid static method ll called on class
@@ -49,8 +48,7 @@ class PrettyTextOutput implements Output
         $err = $error->errtype;
         $msg = $error->message;
 
-        // server:
-        // Array
+        // server: Array
         // (
         //     [DOCUMENT_ROOT] => /home/server/Propositum
         //     [REMOTE_ADDR] => 127.0.0.1
