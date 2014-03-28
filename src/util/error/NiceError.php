@@ -7,10 +7,21 @@ namespace util\error;
  */
 class NiceError
 {
+    const ON_RENDERING = 0;
+    const ON_RENDERED = 1;
+
     /**
      * @var Output[]
      */
     protected $outputs;
+
+    /**
+     * event handlers
+     * @var array
+     */
+    protected $events = [
+        'render' => [],
+    ];
 
     /**
      * @var array
@@ -72,12 +83,11 @@ class NiceError
 
     /**
      * error handler
+     * NOTE: error handler takes two additional arguments (file and line)
      * @param int $errnum
      * @param string $message
-     * @param string $file
-     * @param string $line
      */
-    public function handleError($errnum, $message, $file, $line)
+    public function handleError($errnum, $message)
     {
         $this->render(new Error([
             'message' => $message,
@@ -154,6 +164,28 @@ class NiceError
     }
 
     /**
+     * add an event
+     * @param string $type
+     * @param callable $handler
+     */
+    public function on($type, callable $handler)
+    {
+        $this->events[ $type ][] = $handler;
+    }
+
+    /**
+     * triggers all events of a given type
+     * @param string $type
+     * @param array $args
+     */
+    public function trigger($type, array $args = [])
+    {
+        foreach ($this->events[ $type ] as $event) {
+            call_user_func_array($event, $args);
+        }
+    }
+
+    /**
      * loop through all output objects and render the error
      * @param Error $error
      */
@@ -161,10 +193,11 @@ class NiceError
     {
         foreach ($this->outputs as & $output) {
             $output->render($error);
+            $this->trigger(self::ON_RENDERING, [$error, $output]);
             unset($output);
         }
 
-        die;
+        $this->trigger(self::ON_RENDERED, [$error]);
     }
 
     /**

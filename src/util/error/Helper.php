@@ -20,7 +20,7 @@ class Helper
      */
     public static function enabled()
     {
-        // xxx: why do I need to check $_ENV and getenv????
+        // why do I need to check $_ENV and getenv????
         return (isset($_ENV['NICE_ERRORS']) && $_ENV['NICE_ERRORS']) ||
             getenv('NICE_ERRORS');
     }

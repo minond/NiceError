@@ -27,6 +27,10 @@ if (Helper::enabled()) {
     set_exception_handler([ $handler, 'handleException' ]);
     register_shutdown_function([ $handler, 'handleShutdown' ]);
 
+    $handler->on(NiceError::ON_RENDERED, function () {
+        die;
+    });
+
     // disable all other error outputs
     ini_set('display_errors', false);
     ini_set('error_log', '/dev/null');
